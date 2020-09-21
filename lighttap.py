@@ -14,7 +14,7 @@ ledpins = [18, 23, 24, 25, 12]
 
 def buttonon(bid):
     """ turn on button's LED """
-    buttonled = LED(ledpin[bid])
+    buttonled = LED(ledpins[bid])
     buttonled.on()
 
 
@@ -71,7 +71,7 @@ def randombutton():
 
 def getbuttonpress(bid):
     """ Check if button has been pressed yet. If so turn off LED """
-    button = Button(buttonpin[bid])
+    button = Button(buttonpins[bid])
     button.wait_for_press(10)
 
 
