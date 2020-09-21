@@ -8,30 +8,51 @@ from gpiozero import LED
 runid = time.time()
 gamelen = 30
 
-### GPIO id's aren't the board pin ID
-### wire buttons to 3.3v pins (board pin 1/17)
-### wire LED's to 5v pins (board pins 2/4)
-button1 = Button(5)
-LED1 = LED(18)
-button2 = Button(6)
-LED2 = LED(23)
-button3 = Button13)
-LED3 = LED(24)
-button4 = Button(19)
-LED4 = LED(25)
-button5 = Button(26)
-LED5 = LED(12)
+### The GPIO pins aren't the board pins
+buttonpins = [5, 6, 13, 19, 26]
+ledpins = [18, 23, 24, 25, 12]
 
+def buttonon(bid):
+    """ turn on button's LED """
+    buttonled = LED(ledpin[bid])
+    buttonled.on()
+
+
+def buttonoff(bid):
+    """ turn off button's LED """
+    buttonled = LED(ledpin[bid])
+    buttonled.off()
+
+
+def alloff():
+    for lid in ledpins:
+        buttonoff(lid)
 
 
 def countdown():
     """ Flash the lights in count down.
-        3: 12345
-        2:  234
-        1:   3
-        wait a random amount of time (0.2-2 seconds)
+        3: 01234
+        2:  123
+        1:   2
+        wait a random amount of time (0.5-2.5seconds)
     """
-    staticdelay = 0.2
+    buttonon(4)
+    buttonon(3)
+    buttonon(2)
+    buttonon(1)
+    buttonon(0)
+    time.sleep(.5)
+    alloff
+    time.sleep(.5)
+    buttonon(1)
+    buttonon(2)
+    buttonon(3)
+    time.sleep(.5)
+    alloff
+    time.sleep(.5)
+    buttonon(2)
+    alloff
+    staticdelay = 0.5
     randomdelay = random.random() + random.random()
     delay = staticdelay + randomdelay
     time.sleep(delay)
@@ -44,32 +65,29 @@ def logging(buttonid,tsid):
 
 def randombutton():
     """ get a random button between 0 and 4"""
-    buttonid = randint(1,5)
+    buttonid = randint(0,4)
     return(buttonid)
 
 
-def buttonon(bid):
-    """ turn on button's LED """
-    
-
-def buttonoff(bid):
-    """ turn off button's LED """
-    
-
 def getbuttonpress(bid):
     """ Check if button has been pressed yet. If so turn off LED """
+    button = Button(buttonpin[bid])
+    button.wait_for_press(10)
 
 
 def playgame(starttime):
     """ run the game. """
     endtime = starttime + 30.05
     logging("starting",starttime)
+    lightcount = 0
     while time.time() < endtime:
         button = randombutton
         buttonon(button)
         getbuttonpress(button)
+        lightcount += 1
         logging(button, time.time())
     logging("ending",time.time())
+    logging("lightcount",lightcount)
       
 
 def main():
