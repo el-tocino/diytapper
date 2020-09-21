@@ -77,7 +77,7 @@ def getbuttonpress(bid):
 
 def playgame(starttime):
     """ run the game. """
-    endtime = starttime + 30.05
+    endtime = starttime + gamelen
     logging("starting",starttime)
     lightcount = 0
     while time.time() < endtime:
