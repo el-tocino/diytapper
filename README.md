@@ -1,2 +1,5 @@
 # diytapper
-whack a mole but with buttons.
+
+whack-a-mole but with LED buttons.
+
+WIP
