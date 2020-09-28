@@ -51,6 +51,7 @@ def countdown():
     alloff
     time.sleep(.5)
     buttonon(2)
+    time.sleep(.5)
     alloff
     staticdelay = 0.5
     randomdelay = random.random() + random.random()
