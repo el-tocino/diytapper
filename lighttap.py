@@ -8,6 +8,7 @@ from gpiozero import LED
 
 runid = time.time()
 gamelen = 30
+logname = "tapper.py"
 
 ### The GPIO pins aren't the board pins
 buttonpins = [5, 6, 13, 19, 26]
@@ -17,12 +18,15 @@ def buttonon(bid):
     """ turn on button's LED """
     buttonled = LED(ledpins[bid])
     buttonled.on()
-
+    logging(bid, "on")
+    logging(bid, time.time())
 
 def buttonoff(bid):
     """ turn off button's LED """
     buttonled = LED(ledpins[bid])
     buttonled.off()
+    logging(bid, "off")
+    logging(bid, time.time())
 
 
 def alloff():
@@ -61,9 +65,9 @@ def countdown():
     time.sleep(delay)
 
 
-def logging(buttonid, tsid, logname):
+def logging(buttonid, tsid):
     """ save to log. """
-    print(buttonid, tsid, file=open(logname, "a"))
+    print(buttonid, str(tsid), file=open(logname, "a"))
 
 
 def randombutton():
@@ -80,10 +84,10 @@ def getbuttonpress(bid):
     bidtime = time.time()
     return bidtime
 
-def playgame(starttime, logname):
+def playgame(starttime):
     """ run the game. """
     endtime = starttime + gamelen
-    logging("starting", starttime, logname)
+    logging("starting", time.time())
     lightcount = 0
     while time.time() < endtime:
         button = randombutton
@@ -91,13 +95,12 @@ def playgame(starttime, logname):
         tapped = getbuttonpress(button)
         if tapped <= endtime:
             lightcount += 1
-        logging(button, time.time(), logname)
-    logging("ending", time.time(), logname)
-    logging("lightcount", lightcount, logname)
+            logging(button, time.time())
+    logging("ending", time.time())
+    logging("lightcount %s" % lightcount, time.time())
 
 def main():
     """ Do the stuff and things! """
     countdown()
     starttime = time.time()
-    logname = str(int(starttime)) + ".log"
-    playgame(starttime, logname)
+    playgame(starttime)
